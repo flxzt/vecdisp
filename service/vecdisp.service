@@ -1,0 +1,15 @@
+[Unit]
+Description=vecdisp menu
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+Nice=-19
+ExecStart=/opt/vecdisp/service/menu
+
+[Install]
+WantedBy=multi-user.target
