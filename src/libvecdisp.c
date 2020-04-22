@@ -262,6 +262,14 @@ void vecdisp_draw_ellipse(uint16_t x0, uint16_t y0, uint16_t radius_x, uint16_t 
 	vecdisp_out_buffer_in(x2, y2, 0, OUT_OPCODE_STOP);
 }
 
+void vecdisp_draw_triangle( uint16_t a[2], uint16_t b[2], uint16_t c[2], uint16_t z0 ) {
+	vecdisp_out_buffer_in(a[0], a[1], z0, OUT_OPCODE_START);
+	vecdisp_draw_line_alg( a[0], a[1], b[0], b[1], z0);
+	vecdisp_draw_line_alg( b[0], b[1], c[0], c[1], z0);
+	vecdisp_draw_line_alg( c[0], c[1], a[0], a[1], z0);
+	vecdisp_out_buffer_in(a[0], a[1], 0, OUT_OPCODE_STOP);
+}
+
 void vecdisp_draw_cubebez( uint16_t a[2], uint16_t b[2], uint16_t c[2], uint16_t d[2], uint16_t z0 ) {
 	inline uint16_t lerp(uint16_t a, uint16_t b, double t) {
 		return lround(a + ( b - a ) * t);
@@ -324,10 +332,23 @@ void vecdisp_draw_shape( vecdisp_shape_t * shape, uint16_t x0, uint16_t y0, uint
 	case VECDISP_SHAPE_LINES: {
 		for(uint32_t i = 0; i < shape->data_len - 1; i += 2) {
 			uint16_t line_x0 = lround( scalex * shape->data[i][0] );
-			uint16_t line_y0 = lround( scalex * shape->data[i][1] );
+			uint16_t line_y0 = lround( scaley * shape->data[i][1] );
 			uint16_t line_x1 = lround( scalex * shape->data[i + 1][0] );
-			uint16_t line_y1 = lround( scalex * shape->data[i + 1][1] );
+			uint16_t line_y1 = lround( scaley * shape->data[i + 1][1] );
 			vecdisp_draw_line( line_x0, line_y0, line_x1, line_y1, z0 );
+		}
+		}
+		break;
+	case VECDISP_SHAPE_TRIANGLES: {
+		for(uint32_t i = 0; i < shape->data_len - 2; i += 3) {
+			uint16_t triangle_a[2], triangle_b[2], triangle_c[2];
+			triangle_a[0] = scalex * shape->data[i][0];
+			triangle_a[1] = scaley * shape->data[i][1];
+			triangle_b[0] = scalex * shape->data[i + 1][0];
+			triangle_b[1] = scaley * shape->data[i + 1][1];
+			triangle_c[0] = scalex * shape->data[i + 2][0];
+			triangle_c[1] = scaley * shape->data[i + 2][1];
+			vecdisp_draw_triangle(triangle_a, triangle_b, triangle_c, z0);
 		}
 		}
 		break;

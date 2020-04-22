@@ -72,6 +72,7 @@ typedef enum {
 typedef enum {
 	VECDISP_SHAPE_POINTS,
 	VECDISP_SHAPE_LINES,
+	VECDISP_SHAPE_TRIANGLES,
 	VECDISP_SHAPE_CUBEBEZ
 } VECDISP_SHAPE_TYPE_T;
 
@@ -137,6 +138,8 @@ void vecdisp_draw_rect_aa(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, ui
 parameter: x0 = center x-coordinate, y0 = center y-coordinate, radius_x = radius of x-axis, radius_y = radius of y-axis, z0 = brightness, roundness = step size of corner angle. lower is better
 return value: none */
 void vecdisp_draw_ellipse(uint16_t x0, uint16_t y0, uint16_t radius_x, uint16_t radius_y, uint16_t z0, uint8_t roundness);
+
+void vecdisp_draw_triangle( uint16_t a[2], uint16_t b[2], uint16_t c[2], uint16_t z0 );
 
 /* vecdisp_draw_char(): drawing a char
 parameter: x0 = left x-coordinate, y0 = bottom y-coordinate, x1 = right x-coordinate, y1 = top y-coordinate, z0 = brightness, x = character (unsupported chars are blank)
