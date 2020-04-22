@@ -314,7 +314,7 @@ void vecdisp_draw_shape( vecdisp_shape_t * shape, uint16_t x0, uint16_t y0, uint
 		}
 		break;
 	case VECDISP_SHAPE_POINTS: {
-		for(uint32_t i = 0; i < shape->data_len - 1; i++) {
+		for(uint32_t i = 0; i < shape->data_len; i++) {
 			uint16_t point_x0 = lround( scalex * shape->data[i][0] );
 			uint16_t point_y0 = lround( scaley * shape->data[i][1] );
 			vecdisp_draw_point( point_x0, point_y0, z0 );
@@ -322,7 +322,7 @@ void vecdisp_draw_shape( vecdisp_shape_t * shape, uint16_t x0, uint16_t y0, uint
 		}
 		break;
 	case VECDISP_SHAPE_LINES: {
-		for(uint32_t i = 0; i < shape->data_len; i += 2) {
+		for(uint32_t i = 0; i < shape->data_len - 1; i += 2) {
 			uint16_t line_x0 = lround( scalex * shape->data[i][0] );
 			uint16_t line_y0 = lround( scalex * shape->data[i][1] );
 			uint16_t line_x1 = lround( scalex * shape->data[i + 1][0] );
