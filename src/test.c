@@ -58,7 +58,7 @@ int main(int argc, char * argv[]) {
 	SDL_Init( SDL_INIT_EVERYTHING );
 	SDL_GameControllerEventState(SDL_ENABLE);
 	
-	vecdisp_shape_t * shape_points = vecdisp_shape_create(VECDISP_SHAPE_POINTS, pointcloud, sizeof(pointcloud) / sizeof(pointcloud[0]) );
+	vecdisp_shape_t * shape_points = vecdisp_shape_create(VECDISP_SHAPE_TRIANGLES, pointcloud, sizeof(pointcloud) / sizeof(pointcloud[0]) );
 
 	
 	vecdisp_shape_t * shape_svg = vecdisp_shape_import_svg("C:\\Daten\\source\\C\\vecdisp\\assets\\test.svg");
@@ -146,3 +146,4 @@ int main(int argc, char * argv[]) {
 	vecdisp_end();
 	return 0;
 }
+

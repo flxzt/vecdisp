@@ -139,6 +139,9 @@ parameter: x0 = center x-coordinate, y0 = center y-coordinate, radius_x = radius
 return value: none */
 void vecdisp_draw_ellipse(uint16_t x0, uint16_t y0, uint16_t radius_x, uint16_t radius_y, uint16_t z0, uint8_t roundness);
 
+/* vecdisp_draw_triangle(): drawing a triangle
+parameter: a[2] = coordinates of first corner, b[2] = coordinates of second corner, c[2] = coordinates of third corner
+return value: none */
 void vecdisp_draw_triangle( uint16_t a[2], uint16_t b[2], uint16_t c[2], uint16_t z0 );
 
 /* vecdisp_draw_char(): drawing a char
