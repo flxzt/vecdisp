@@ -170,7 +170,7 @@ int main(int argc, char * argv[]) {
 			SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
 			controller_p0 = NULL;
 			controller_p1 = NULL;
-			vecdisp_draw_dot(0,0,DRAW_BRTNS_NONE);
+			vecdisp_draw_point(0,0,DRAW_BRTNS_NONE);
 			vecdisp_draw_update();
 			ret = vecdisp_out_end();
 			assert(ret == VECDISP_SUCCESS);
@@ -262,38 +262,15 @@ void logic_handle_input( SDL_Event * event,
 
 void draw_startup(uint32_t ticks_lag) {
 	double startup_brtns = lround(0x0FFF * exp( (-1) * 0.7* (1 - ((double) ticks_lag) / STARTUP_MS )));
-	uint16_t x0 = DRAW_CENTER;
-	uint16_t y0 = DRAW_CENTER - 100;
-	uint16_t x1 = DRAW_CENTER + 450;
-	uint16_t y1 = DRAW_CENTER + 100;
-	vecdisp_draw_string(x0, y0, x1, y1, startup_brtns, "VECDISP", 20);
-
-	int logo_scale = 12;
-	x0 = DRAW_CENTER - 300;
-	y0 = DRAW_CENTER - 120;
-	uint16_t logo[][4] = { // format: x0, y0, x1, y1
-		{ 0, 0, 20, 0 },
-		{ 20, 0, 20, 20 },
-		{ 20, 20, 0, 20},
-		{ 0, 20, 0, 0 },
-		{ 2, 2, 18, 2 },
-		{ 18, 2, 18, 18 },
-		{ 18, 18, 2, 18},
-		{ 2, 18, 2, 2 },
-		{ 3, 17, 3, 3 },
-		{ 3, 3, 16, 16 },
-		{ 16, 15, 4, 3 },
-		{ 4, 3, 14, 3 },
-		{ 14, 3, 16, 4 },
-		{ 16, 4, 16, 15}
-	};
-	for(int j = 0; j < (sizeof( logo ) / sizeof( logo[0] )); j++) {
-		logo[j][0] = x0 + logo[j][0] * logo_scale;
-		logo[j][1] = y0 + logo[j][1] * logo_scale;
-		logo[j][2] = x0 + logo[j][2] * logo_scale;
-		logo[j][3] = y0 + logo[j][3] * logo_scale;
-		vecdisp_draw_line( logo[j][0], logo[j][1], logo[j][2], logo[j][3], startup_brtns);
+	vecdisp_shape_t * shape_svg = vecdisp_shape_import_svg("/opt/vecdisp/assets/vecdisp_logo.svg");
+	if(shape_svg == NULL) {
+		return;
 	}
+	uint16_t x0 = 0;
+	uint16_t y0 = 200;
+	uint16_t x1 = DRAW_RES - 1;
+	uint16_t y1 = DRAW_RES - 201;
+	vecdisp_draw_shape( shape_svg, x0, y0, x1, y1, startup_brtns );
 }
 
 void draw_menu(uint32_t ticks_lag, char ** ls_elements, unsigned int ls_nelements, unsigned int element_sel) {

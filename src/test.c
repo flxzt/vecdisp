@@ -61,7 +61,7 @@ int main(int argc, char * argv[]) {
 	vecdisp_shape_t * shape_points = vecdisp_shape_create(VECDISP_SHAPE_TRIANGLES, pointcloud, sizeof(pointcloud) / sizeof(pointcloud[0]) );
 
 	
-	vecdisp_shape_t * shape_svg = vecdisp_shape_import_svg("C:\\Daten\\source\\C\\vecdisp\\assets\\test.svg");
+	vecdisp_shape_t * shape_svg = vecdisp_shape_import_svg("/opt/vecdisp/assets/test.svg");
 	if(shape_svg == NULL) {
 		printf("Failed to import svg\n");
 		return -1;
