@@ -1,4 +1,4 @@
-// astroids.c
+// asteroids.c
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -144,7 +144,7 @@ int main(int argc, char * argv[]) {
                 logic_handle_input( &event, &input_p0, controller_p0);
             }
             break;
-        case SDL_CONTROLLERBUTTONDOWN:      
+        case SDL_CONTROLLERBUTTONDOWN:
             if(controller_cnt > 0) {
                 printf("BUTTONDOWN");
                 logic_handle_input( &event, &input_p0, controller_p0);
@@ -211,6 +211,13 @@ void logic_handle_input(SDL_Event * event, input_params_t * input_p0, SDL_GameCo
 
 		input_p0->shoot = false;
 		switch (event->cbutton.button) {
+        case SDL_CONTROLLER_BUTTON_BACK:
+            if(event->cbutton.state == 1) {
+                SDL_Event user_quit_event;
+                user_quit_event.type = SDL_QUIT;
+                SDL_PushEvent( &user_quit_event );
+            }
+            break;
 		case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
             printf("DPAD_LEFT");
 			if(event->cbutton.state == 1) {
@@ -243,7 +250,6 @@ void logic_handle_input(SDL_Event * event, input_params_t * input_p0, SDL_GameCo
 		}
 	}
 }
-
 
 void reset_game(void){
 

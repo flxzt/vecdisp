@@ -31,8 +31,9 @@ typedef enum {
 void logic_handle_input( SDL_Event * event,
 	SDL_GameController * controller_p0,
 	SDL_GameController * controller_p1,
-	PROGRAM_STATE_T PROGRAM_STATE,
-	unsigned int * element_sel;
+	PROGRAM_STATE_T * PROGRAM_STATE,
+	unsigned int * element_sel,
+	unsigned int ls_nelements
 );
 void draw_menu(uint32_t ticks_lag, char ** ls_elements, unsigned int ls_nelements, unsigned int element_sel);
 void draw_startup(uint32_t ticks_lag);
@@ -233,7 +234,7 @@ void logic_handle_input( SDL_Event * event,
 	unsigned int ls_nelements
 	) {
 	switch (event->cbutton.button) {
-	case SDL_CONTROLLER_BUTTON_START:
+	case SDL_CONTROLLER_BUTTON_BACK:
 		if(event->cbutton.state == 1) {
 			SDL_Event user_quit_event;
 			user_quit_event.type = SDL_QUIT;

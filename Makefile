@@ -66,3 +66,6 @@ pong: $(OBJDIR)/pong.o $(OBJDIR)/fonts.o $(OBJDIR)/libvecdisp.o
 
 asteroids: $(OBJDIR)/asteroids.o $(OBJDIR)/fonts.o $(OBJDIR)/libvecdisp.o
 	$(LD_CMD)
+
+demo3d: $(OBJDIR)/demo3d.o $(OBJDIR)/fonts.o $(OBJDIR)/libvecdisp.o
+	$(LD_CMD)

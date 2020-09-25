@@ -128,7 +128,7 @@ int main(int argc, char * argv[]) {
 				break;
 			case SDL_CONTROLLERBUTTONDOWN:
 				switch (event.cbutton.button) {
-				case SDL_CONTROLLER_BUTTON_START:
+				case SDL_CONTROLLER_BUTTON_BACK:
 					if(event.cbutton.state == 1) {
 						SDL_Event user_quit_event;
 						user_quit_event.type = SDL_QUIT;

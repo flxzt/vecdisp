@@ -1,4 +1,4 @@
-// test.c
+// demo3d.c
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,12 +29,46 @@ int main(int argc, char * argv[]) {
 
 	SDL_Init( SDL_INIT_EVERYTHING );
 	SDL_GameControllerEventState(SDL_ENABLE);
+
+	vecdisp_shape_t * shape_cube3d = vecdisp_shape_create(VECDISP_SHAPE_LINES, NULL, 0 );
 	
-	vecdisp_shape_t * shape_svg = vecdisp_shape_import_svg("/opt/vecdisp/assets/test.svg");
-	if(shape_svg == NULL) {
-		printf("Failed to import svg\n");
-		return -1;
+	// format: {x, y, z}, x = horizontal, y = vertical, z = depth
+	double cube3d[][3] = { 
+		{ -1, -1, -1 },
+		{ 1, -1, -1 },
+		{ 1, -1, -1 },
+		{ 1, 1, -1 },
+		{ 1, 1, -1 },
+		{ -1, 1, -1 },
+		{ -1, 1, -1 },
+		{ -1, -1, -1 },
+		{ -1, -1, -1 },
+		{ -1, -1, 1 },
+		{ -1, 1, -1 },
+		{ -1, 1, 1 },
+		{ 1, 1, -1 },
+		{ 1, 1, 1 },
+		{ 1, -1, -1 },
+		{ 1, -1, 1 },
+		{ -1, -1, 1 },
+		{ 1, -1, 1 },
+		{ 1, -1, 1 },
+		{ 1, 1, 1 },
+		{ 1, 1, 1 },
+		{ -1, 1, 1 },
+		{ -1, 1, 1 },
+		{ -1, -1, 1 },
+	 };
+	for(int i = 0; i < 24; i++) {
+		uint16_t data[2] = {0,0};
+		vecdisp_shape_data_add(shape_cube3d, &data, 1 );
+		
 	}
+	printf("%i\n", shape_cube3d->data_len);
+	
+	double rotx = 0, roty = 0, rotz = 0;
+	double sqrt_3 = sqrt(3);
+	double sqrt_6 = sqrt(6);
 	
 	// main loop
 	SDL_Event event;
@@ -98,14 +132,43 @@ int main(int argc, char * argv[]) {
 			}
 		}
 
-		vecdisp_draw_shape( shape_svg, 0,0,DRAW_RES - 1, DRAW_RES - 1, DRAW_BRTNS_BRIGHT );
 		
+		rotx += 0.00002;
+		roty += 0.00001;
+		rotz += 0.00001;
+		if( rotx >= M_PI ) rotx -= M_PI;
+		if( roty >= M_PI ) roty -= M_PI;
+		if( rotz >= M_PI ) rotz -= M_PI;
+
+		
+		for(int i = 0; i < 24; i++) {
+			double c[3];
+			cube3d[i][0] = cos(rotx) * cube3d[i][0] - sin(rotx) * cube3d[i][1]; // Rotation around X Axis
+			cube3d[i][1] = sin(rotx) * cube3d[i][0] + cos(rotx) * cube3d[i][1];
+			cube3d[i][2] = 1 * cube3d[i][2];
+
+			cube3d[i][0] = cos(roty) * cube3d[i][0] - sin(roty) * cube3d[i][2]; // Rotation around Y Axis
+			cube3d[i][1] = 1 * cube3d[i][1];
+			cube3d[i][2] = cos(roty) * cube3d[i][2] + sin(roty) * cube3d[i][0];
+
+			cube3d[i][0] = 1 * cube3d[i][0]; // Rotation around Z Axis
+			cube3d[i][1] = cos(rotz) * cube3d[i][1] - sin(rotz) * cube3d[i][2];
+			cube3d[i][2] = cos(rotz) * cube3d[i][2] + sin(rotz) * cube3d[i][1];
+
+			c[0] = ( sqrt(3) * cube3d[i][0] + (-1) * sqrt_3 * cube3d[i][2] ) / sqrt_6;
+			c[1] = ( 1 * cube3d[i][0] + 2 * cube3d[i][1] + 1 * cube3d[i][2] ) / sqrt_6;
+			
+			shape_cube3d->data[i][0] =  (DRAW_RES / 4) * c[0] + (DRAW_RES / 2);
+			shape_cube3d->data[i][1] = (DRAW_RES / 4) * c[1] + (DRAW_RES / 2);
+		}
+		
+		vecdisp_draw_shape( shape_cube3d, 0, 0, DRAW_RES - 1, DRAW_RES - 1, DRAW_BRTNS_BRIGHT);
 		vecdisp_dbg_showfps();
 		vecdisp_draw_update();
 	}
 
 	// cleaning up
-	vecdisp_shape_destroy(shape_svg);
+	vecdisp_shape_destroy(shape_cube3d);
 	SDL_QuitSubSystem( SDL_INIT_EVERYTHING );
 	vecdisp_out_end();
 	vecdisp_end();
