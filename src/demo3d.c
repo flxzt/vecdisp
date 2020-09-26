@@ -27,7 +27,7 @@ int main(int argc, char * argv[]) {
 	SDL_GameController * controller_p0 = NULL, * controller_p1 = NULL;
 	int controller_cnt = 0;
 
-	SDL_Init( SDL_INIT_EVERYTHING );
+	SDL_Init( SDL_INIT_GAMECONTROLLER );
 	SDL_GameControllerEventState(SDL_ENABLE);
 
 	vecdisp_shape_t * shape_cube3d = vecdisp_shape_create(VECDISP_SHAPE_LINES, NULL, 0 );
@@ -133,8 +133,8 @@ int main(int argc, char * argv[]) {
 		}
 
 		
-		rotx += 0.00002;
-		roty += 0.00001;
+		rotx += 0.00004;
+		roty += 0.00002;
 		rotz += 0.00001;
 		if( rotx >= M_PI ) rotx -= M_PI;
 		if( roty >= M_PI ) roty -= M_PI;
@@ -152,14 +152,14 @@ int main(int argc, char * argv[]) {
 			cube3d[i][2] = cos(roty) * cube3d[i][2] + sin(roty) * cube3d[i][0];
 
 			cube3d[i][0] = 1 * cube3d[i][0]; // Rotation around Z Axis
-			cube3d[i][1] = cos(rotz) * cube3d[i][1] - sin(rotz) * cube3d[i][2];
+			cube3d[i][1] = cos(rotz) * cube3d[i][1] - sin(rotz) * cube3d[i][2]; // Rotation around Z Axis
 			cube3d[i][2] = cos(rotz) * cube3d[i][2] + sin(rotz) * cube3d[i][1];
 
 			c[0] = ( sqrt(3) * cube3d[i][0] + (-1) * sqrt_3 * cube3d[i][2] ) / sqrt_6;
 			c[1] = ( 1 * cube3d[i][0] + 2 * cube3d[i][1] + 1 * cube3d[i][2] ) / sqrt_6;
 			
-			shape_cube3d->data[i][0] =  (DRAW_RES / 4) * c[0] + (DRAW_RES / 2);
-			shape_cube3d->data[i][1] = (DRAW_RES / 4) * c[1] + (DRAW_RES / 2);
+			shape_cube3d->data[i][0] =  lround((DRAW_RES / 4) * c[0] + (DRAW_RES / 2));
+			shape_cube3d->data[i][1] = lround((DRAW_RES / 4) * c[1] + (DRAW_RES / 2));
 		}
 		
 		vecdisp_draw_shape( shape_cube3d, 0, 0, DRAW_RES - 1, DRAW_RES - 1, DRAW_BRTNS_BRIGHT);

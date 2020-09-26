@@ -8,7 +8,6 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <math.h>
-#include <gsl/gsl_math.h>
 
 #define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
@@ -27,7 +26,7 @@ int main(int argc, char * argv[]) {
 	SDL_GameController * controller_p0 = NULL, * controller_p1 = NULL;
 	int controller_cnt = 0;
 
-	SDL_Init( SDL_INIT_EVERYTHING );
+	SDL_Init( SDL_INIT_GAMECONTROLLER );
 	SDL_GameControllerEventState(SDL_ENABLE);
 	
 	vecdisp_shape_t * shape_svg = vecdisp_shape_import_svg("/opt/vecdisp/assets/test.svg");
