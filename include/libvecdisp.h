@@ -46,7 +46,7 @@ Must not exceed 4096 */
 /* shape brightness. Adjust for sensitivity of Z Output / different Scopes or Displays */
 #if defined (OUT_METHOD_SPIDAC)
 	#define DRAW_BRTNS_BRIGHT 	0x0FFF
-	#define DRAW_BRTNS_DARK 	0x0E99
+	#define DRAW_BRTNS_DARK 	0x0E33
 	#define DRAW_BRTNS_NONE		0x0000
 #elif defined (OUT_METHOD_SIM)
 	#define DRAW_BRTNS_BRIGHT 	0x0FFF
