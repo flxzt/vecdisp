@@ -117,7 +117,7 @@ int main(int argc, char * argv[]) {
 		//vecdisp_draw_shape( shape_svg, 0,0,DRAW_RES - 1, DRAW_RES - 1, DRAW_BRTNS_BRIGHT );
 		vecdisp_draw_rect_aa(0,0, DRAW_RES - 1, DRAW_RES -1, DRAW_BRTNS_BRIGHT);
 		vecdisp_draw_string(DRAW_CENTER - 400, DRAW_CENTER + 350, DRAW_CENTER + 0, DRAW_CENTER + 450, DRAW_BRTNS_BRIGHT, "bright  ", 10);
-		vecdisp_draw_string(DRAW_CENTER + 0, DRAW_CENTER + 300, DRAW_CENTER + 400, DRAW_CENTER + 400, DRAW_BRTNS_DARK, "dark    ", 10);
+		vecdisp_draw_string(DRAW_CENTER + 0, DRAW_CENTER + 350, DRAW_CENTER + 400, DRAW_CENTER + 450, DRAW_BRTNS_DARK, "dark    ", 10);
 		vecdisp_draw_string(DRAW_CENTER - 400, DRAW_CENTER + 200, DRAW_CENTER + 400, DRAW_CENTER + 300, DRAW_BRTNS_BRIGHT, fps_str, 10);
 		vecdisp_draw_string(DRAW_CENTER - 400, DRAW_CENTER + 50, DRAW_CENTER + 400, DRAW_CENTER + 150, DRAW_BRTNS_BRIGHT, controller_str, 10);
 		vecdisp_draw_line(DRAW_CENTER - 20, DRAW_CENTER, DRAW_CENTER + 20, DRAW_CENTER, DRAW_BRTNS_BRIGHT);
