@@ -36,7 +36,7 @@ void logic_handle_input( SDL_Event * event,
 	unsigned int ls_nelements
 );
 void draw_menu(uint32_t ticks_lag, char ** ls_elements, unsigned int ls_nelements, unsigned int element_sel);
-void draw_startup(uint32_t ticks_lag);
+void draw_startup(uint32_t ticks_lag, vecdisp_shape_t * shape);
 
 
 int main(int argc, char * argv[]) {
@@ -55,6 +55,8 @@ int main(int argc, char * argv[]) {
 
 	SDL_Init( SDL_INIT_GAMECONTROLLER );
 	SDL_GameControllerEventState(SDL_ENABLE);
+
+	vecdisp_shape_t * shape_svg = vecdisp_shape_import_svg("/opt/vecdisp/assets/vecdisp_logo.svg");
 
 	/* ###########
 	### piping ###
@@ -156,7 +158,7 @@ int main(int argc, char * argv[]) {
 
 		switch(PROGRAM_STATE) {
 		case PROGRAM_STATE_STARTUP:
-			draw_startup(ticks_lag);
+			draw_startup(ticks_lag, shape_svg);
 			if(ticks_lag >= STARTUP_MS) {
 				ticks_lag = 0;
 				PROGRAM_STATE = PROGRAM_STATE_MENU;
@@ -261,17 +263,14 @@ void logic_handle_input( SDL_Event * event,
 	}
 }
 
-void draw_startup(uint32_t ticks_lag) {
+void draw_startup(uint32_t ticks_lag, vecdisp_shape_t * shape) {
 	double startup_brtns = lround(0x0FFF * exp( (-1) * 0.7* (1 - ((double) ticks_lag) / STARTUP_MS )));
-	vecdisp_shape_t * shape_svg = vecdisp_shape_import_svg("/opt/vecdisp/assets/vecdisp_logo.svg");
-	if(shape_svg == NULL) {
+	
+	if(shape == NULL) {
 		return;
 	}
-	uint16_t x0 = 0;
-	uint16_t y0 = 200;
-	uint16_t x1 = DRAW_RES - 1;
-	uint16_t y1 = DRAW_RES - 201;
-	vecdisp_draw_shape( shape_svg, x0, y0, x1, y1, startup_brtns );
+
+	vecdisp_draw_shape( shape, 0, 200, DRAW_RES - 1, DRAW_RES - 1, startup_brtns );
 }
 
 void draw_menu(uint32_t ticks_lag, char ** ls_elements, unsigned int ls_nelements, unsigned int element_sel) {
