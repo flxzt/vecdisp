@@ -1,6 +1,7 @@
 # Overview
-vecdisp is a project to drive vector displays such as oscilloscopes in XY-mode, CRT displays, or any other displays that can take two voltage values as X and Y coordinates.
-It is mainly written for the `Raspberry Pi 2 / Zero W` and utilises the `SDL2` and `bcm2835` libraries.
+vecdisp is a student project which attempts to recreate the look of old vector displays such as the one seen on the Vectrex videogame console. We use modern hardware (the Raspberry Pi 2) and a custom-made HAT with 12-bit DACs. Alongside that we wrote the 'libvecdisp' C library found in this repo. It can be used to compile binaries directly on the Rasberry Pi which can be launched from our basic menu (which can be started at boot as a systemd service).
+Cross compiling should theoretically also be possible, but is not tested yet. 
+To create binaries without having access to the hardware, the library also has a compile option to output the application to the screen, using the 'SDL2' library.
 
 #### libvecdisp
 `libvecdisp.h` is the belonging C API. Its features are:
@@ -19,7 +20,7 @@ The library and project is using:
 * analog oscilloscope in XY-mode
 
 # Raspberry Pi installation / configuration
-The distribution of choice is `Raspbian`. It can be downloaded [here](https://www.raspberrypi.org/downloads/raspbian/). 
+We are using `Raspbian`. It can be downloaded [here](https://www.raspberrypi.org/downloads/raspbian/). 
 
 Once installed, login with username `pi` and password `raspberry`. Be aware that the default keyboard layout is **english**, so for example on german keyboards you actually need to type in `raspperrz` because the `y` and `z` keys are swapped. Then use `sudo raspi-config` to tweak the settings. ( The `-` key on german keyboards is `?` )
 
