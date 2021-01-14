@@ -62,7 +62,7 @@ For SPI and GPIO access the `bcm2835.h` library is used. It can be downloaded [h
     $ sudo make install
 
 ## SDL2
-This step is optional, since `libvecdisp` is currently not depending on SDL2, or more specifically OpenGL with KMS. However, it could be useful for future applications which utilize the GPU for rendering, and then using the transform feedback loop to offscreen render the generated primitives. This possibility still needs to be tested.
+This step is optional, since `libvecdisp` is currently not depending on KMS with SDL2 / OpenGL. However, it could be useful for future 3d applications which utilize the GPU for rendering, and then use the transform feedback loop to offscreen render the generated primitives on the oscilloscope. This possibility still needs to be tested.
 
 To enable KMS support for SDL2, it needs to be compiled and built manually. The raspbian stretch repository version is not built with KMS support unfortunately.
 The full guide to compiling can be read [here](https://github.com/midwan/amiberry/wiki/Compile-SDL2-from-source).
