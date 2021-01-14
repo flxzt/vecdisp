@@ -110,7 +110,7 @@ VECDISP_T vecdisp_out_buffer_init(void) {
 	out_buffer.size = out_buffer_size;
 	out_buffer.pos_r = 0;
 	out_buffer.pos_w = 0;
-	out_buffer.data = (uint8_t **) calloc(out_buffer_size, sizeof(uint8_t* ));
+	out_buffer.data = (uint8_t **) calloc(out_buffer_size, sizeof(uint8_t* )); // Reserving memory for buffer data
 	if(out_buffer.data == NULL ) return VECDISP_FAILURE;
 	for(int i = 0; i < out_buffer_size; i++ ) {
 		out_buffer.data[i] = (uint8_t *) calloc(7, sizeof(uint8_t ));
@@ -125,7 +125,7 @@ VECDISP_T vecdisp_out_buffer_init(void) {
 	return VECDISP_SUCCESS;
 }
 
-VECDISP_T vecdisp_out_buffer_end(void) {
+VECDISP_T vecdisp_out_buffer_end(void) {  // Freeing memory of buffer data
 	for(int i = out_buffer.size - 1; i >= 0; i--) {
 		free(out_buffer.data[i]);
 	}
@@ -134,13 +134,13 @@ VECDISP_T vecdisp_out_buffer_end(void) {
 }
 
 VECDISP_T vecdisp_out_buffer_in( uint16_t x0, uint16_t y0, uint16_t z0, OUT_OPCODE_T OUT_OPCODE ) {
-	x0 = (x0 * DRAW_SCALE) & 0x0FFF;
+	x0 = (x0 * DRAW_SCALE) & 0x0FFF; // Truncating x, y, z values to 12 bit
 	y0 = (y0 * DRAW_SCALE) & 0x0FFF;
 	z0 = (~z0) & 0x0FFF;
 	OUT_OPCODE = OUT_OPCODE & 0xFF;
 
-	if( ((out_buffer.pos_w + 1) & out_buffer_mask) == out_buffer.pos_r) {
-		uint8_t ** data_tmp = (uint8_t **) realloc( out_buffer.data, (out_buffer_size << 1) * 7 * sizeof(uint8_t) );
+	if( ((out_buffer.pos_w + 1) & out_buffer_mask) == out_buffer.pos_r) {  // Extending memory when overflowing
+		uint8_t ** data_tmp = (uint8_t **) realloc( out_buffer.data, (out_buffer_size << 1) * 7 * sizeof(uint8_t) ); 
 		if(data_tmp == NULL) {
 			return VECDISP_FAILURE;
 		}
@@ -155,15 +155,15 @@ VECDISP_T vecdisp_out_buffer_in( uint16_t x0, uint16_t y0, uint16_t z0, OUT_OPCO
 			}
 		}
 		out_buffer.data = data_tmp;
-		uint32_t delta = ( out_buffer_size - 1 - out_buffer.pos_r );
+		uint32_t delta = ( out_buffer_size - 1 - out_buffer.pos_r );  // delta of current read position to the largest position to calculate new read position
 		for( int i = out_buffer.pos_r; i < out_buffer_size; i++ ) {
-			memcpy( out_buffer.data[i], data_tmp[i + out_buffer_size], 7  * sizeof(uint8_t) );
+			memcpy( out_buffer.data[i], data_tmp[i + out_buffer_size], 7  * sizeof(uint8_t) );  // copying data right of read position to the end of the new buffer (because behaviour of the ring buffer)
 		}
 		out_buffer.pos_r += delta;
 		out_buffer_size = (out_buffer_size << 1);
 		out_buffer_mask = (out_buffer_size - 1);
 	}
-	vecdisp_prepare_data( x0, y0, z0, OUT_OPCODE, out_buffer.data[out_buffer.pos_w] );
+	vecdisp_prepare_data( x0, y0, z0, OUT_OPCODE, out_buffer.data[out_buffer.pos_w] ); // Encoding data for DAC's and writing into buffer
 
 	out_buffer.pos_w = (out_buffer.pos_w + 1) & out_buffer_mask;
 	return VECDISP_SUCCESS;
@@ -174,12 +174,12 @@ VECDISP_T vecdisp_out_buffer_out( uint8_t ** data ) {
 
 	*data = out_buffer.data[out_buffer.pos_r];
 	out_buffer.pos_r++;
-	out_buffer.pos_r &= out_buffer_mask;
+	out_buffer.pos_r &= out_buffer_mask; // Mask to correct read position when it wrapped around to the beginning
 	return VECDISP_SUCCESS;
 }
 
-void vecdisp_prepare_data( uint16_t x0, uint16_t y0, uint16_t z0, OUT_OPCODE_T OUT_OPCODE, uint8_t data_elem[7] ) {
-	data_elem[0] = 0x00 | ( x0 >> 8 ) | (OUT_GAIN << 5)  | (0x01 << 4);
+void vecdisp_prepare_data( uint16_t x0, uint16_t y0, uint16_t z0, OUT_OPCODE_T OUT_OPCODE, uint8_t data_elem[7] ) { // Data encoding according to datasheet MCP4922
+	data_elem[0] = 0x00 | ( x0 >> 8 ) | (OUT_GAIN << 5)  | (0x01 << 4); 
 	data_elem[1] = 0x00 | x0;
 	data_elem[2] = 0x00 | ( y0 >> 8 ) | ( 0x01 << 7 ) | (OUT_GAIN << 5)  | (0x01 << 4);
 	data_elem[3] = 0x00 | y0;
@@ -597,7 +597,6 @@ void vecdisp_out_setvals(uint8_t * data) {
 		switch ( data[6]) {
 		case OUT_OPCODE_START:
 			setval_x0y0(data);
-			//bcm2835_delayMicroseconds(DAC_DELAY_US);
 			setval_z0(data);
 			bcm2835_delayMicroseconds(DAC_DELAY_US);
 			break;

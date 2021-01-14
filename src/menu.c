@@ -16,8 +16,6 @@
 
 #include "libvecdisp.h"
 
-#define APPS_DIR "/opt/vecdisp/apps"
-
 #define STARTUP_MS 5000
 
 typedef enum {
@@ -63,12 +61,12 @@ int main(int argc, char * argv[]) {
 	############*/
 	FILE *ls_pipe;
 	unsigned int ls_nbytes = 100;
-	char * ls_stream;
+	char * ls_stream, * current_dir = NULL;
 	char ls_cmd[120], bin_cmd[100], apps_dir[90];
 	char ** ls_elements = NULL, ** ls_elements_realloc = NULL;
 	unsigned int ls_nelements = 0;
 
-	sprintf(apps_dir, APPS_DIR);
+	sprintf(apps_dir, "%s/apps", getcwd(current_dir, 80));
 	sprintf(ls_cmd, "ls %s/ | grep .bin", apps_dir);
 	ls_pipe = popen(ls_cmd, "r");
 
