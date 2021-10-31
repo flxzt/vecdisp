@@ -1,4 +1,8 @@
-# Overview
+<div align="center">
+<img src="misc/image-oszilloskop.jpg" width="512"></img>
+</div><br><br><br>
+
+# vecdisp
 vecdisp is a student project which attempts to recreate the look of old vector displays such as the one seen on the Vectrex videogame console. We use modern hardware (the Raspberry Pi 2) and a custom-made HAT with 12-bit DACs. Alongside that we wrote the 'libvecdisp' C library found in this repo. It can be used to compile binaries directly on the Rasberry Pi which can be launched from our basic menu (which can be started at boot as a systemd service).
 Cross compiling should theoretically also be possible, but is not tested yet. 
 To create binaries without having access to the hardware, the library also has a compile option to output the application to the screen, using the 'SDL2' library.
