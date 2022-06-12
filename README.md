@@ -1,5 +1,7 @@
-<div align="center">
-<img src="misc/image-oszilloskop.jpg" width="512"></img>
+<div align="center" spacing="20px">
+<img src="misc/image-oszilloskop.jpg" height="500"></img>
+<img src="misc/clock-oszilloskop.jpg" height="500"></img>
+<img src="misc/demo3d-oszilloskop.jpg" height="500"></img>
 </div><br><br><br>
 
 # vecdisp
